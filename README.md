@@ -1,9 +1,22 @@
 # Firmenwebsite SaMu
 
+![Vanilla JS — kein Framework](https://img.shields.io/badge/framework-keins-2b7de1?style=flat-square)
+![GSAP self-hosted](https://img.shields.io/badge/GSAP-self--hosted-2b7de1?style=flat-square)
+![WCAG AA](https://img.shields.io/badge/a11y-WCAG%20AA-2b7de1?style=flat-square)
+![DSGVO — kein Tracking, keine Cookies](https://img.shields.io/badge/DSGVO-kein%20Tracking-2b7de1?style=flat-square)
+![Build: Python Stdlib](https://img.shields.io/badge/build-Python%20Stdlib-2b7de1?style=flat-square)
+
 Statische One-Page-Firmenwebsite für einen Handwerksbetrieb (Dachbeschichtung,
 Hausmeisterservice, Schweiß- und Reparaturarbeiten, Kamen). Bewusst ohne Framework,
 Bundler, Backend, Cookies oder Kontaktformular gebaut — die Kernaktion des Besuchers
 ist Anruf oder WhatsApp.
+
+> **English:** Static one-page website for a crafts business — deliberately built
+> without any framework, bundler, backend or cookies. Vanilla HTML/CSS/JS with a
+> self-hosted GSAP scroll choreography (weld-seam scrub, coating color metaphor,
+> signature self-draw), an adaptive effect budget for low-end devices, strict
+> GDPR compliance (no external requests, no tracking), WCAG AA contrast and a
+> self-validating single-file build (~6.6 MB, everything inlined).
 
 **Live:** https://firmenwebsite-samu.vercel.app
 
