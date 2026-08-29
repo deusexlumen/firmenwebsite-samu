@@ -1,0 +1,6 @@
+# Deployment-Schutz: Rohmaterial und Werkzeuge gehoeren nicht ins Webroot
+IMG-*.jpg
+*.py
+# Secrets und Plattform-Metadaten nie deployen (.gitignore greift hier nicht!)
+.env*
+.vercel

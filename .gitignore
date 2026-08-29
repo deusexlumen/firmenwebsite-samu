@@ -1,0 +1,22 @@
+# Tooling & Debug — gehoert nicht zur Website
+.claude/
+.playwright-mcp/
+.remember/
+.skill-output/
+kimi-debug-extract/
+kimi-debug-session_*.zip
+kimi-export-session_*.md
+
+# Private Rohdaten: unzensierte Kundenfotos, Retusche-Quellen, echte Unterschrift
+# (liegen lokal als Build-Input fuer rebuild_gallery.py / vectorize_signature.py,
+# gehoeren weder ins Repo noch ins Web — Datenschutz, s. AGENTS.md)
+IMG-*.jpg
+sascha-*-raw.png
+signatur-mundt.png
+
+# Generiert, nie von Hand editieren — bei Bedarf: cd site && python build_artifact.py
+site/artifact.html
+
+# Vercel-CLI-Arbeitsverzeichnis und Secrets
+.vercel/
+.env*

@@ -1,0 +1,1928 @@
+/* ============================================
+   SaMu — Dachbeschichtung & Hausmeisterservice
+   Dark-committed brand design (Anthrazit & SaMu-Markenblau)
+   ============================================ */
+
+/* Fonts are served from this domain, not from Google's servers: loading them
+   from fonts.gstatic.com would send every visitor's IP address to Google. */
+
+@font-face {
+  font-family: "Archivo Black";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("assets/fonts/archivo-black-400.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Barlow";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("assets/fonts/barlow-400.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Barlow";
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("assets/fonts/barlow-500.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Barlow";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("assets/fonts/barlow-600.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Barlow Condensed";
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("assets/fonts/barlow-condensed-500.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Barlow Condensed";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("assets/fonts/barlow-condensed-600.woff2") format("woff2");
+}
+
+/* Die zweite Stimme der Seite: Newsreader Italic spricht die menschlichen
+   Zeilen (Callback-Notiz, Zitat, Foto-Handschrift), Space Mono ist die
+   Kreidemarkierung auf Bauplan und Zollstock (Nummern, Tags, Messdetails).
+   Beide selbst gehostet — dieselbe DSGVO-Begründung wie oben. */
+@font-face {
+  font-family: "Newsreader";
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url("assets/fonts/newsreader-italic.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Space Mono";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("assets/fonts/space-mono-400.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Space Mono";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("assets/fonts/space-mono-700.woff2") format("woff2");
+}
+
+:root {
+  color-scheme: dark;
+
+  /* ================= Die Kante =================
+     Auf einem Dach gibt es beim Beschichten genau eine interessante Stelle:
+     die harte Linie, an der die tote, kalkig ausgewaschene Fläche in die
+     frisch beschichtete übergeht. Diese Kante ist das Produkt — also ist sie
+     hier das Gestaltungsprinzip.
+
+     Die Seite trägt beim Scrollen ihre eigene Beschichtung auf: oben der
+     verwitterte Zustand (warm, stumpf, der Akzent noch ein totes Graubraun),
+     unten der beschichtete (kühl, tief, der Akzent lebendiges Blau).
+     script.js interpoliert die folgenden Tokens zwischen beiden Sätzen.
+     Die Werte hier sind der ENDzustand — ohne JS und bei reduzierter
+     Bewegung steht die Seite fertig beschichtet da.
+     ============================================= */
+
+  /* Ground & panels */
+  --ground: #07090c;
+  --panel: #0e1318;
+  --panel-2: #121820;
+  --line: #1d252e;
+  --line-bright: #2b3641;
+
+  /* Steel neutrals (blue-biased, not pure grey) */
+  --text: #e6ecf2;
+  --text-muted: #8b98a6;
+  /* ~5.2:1 auf --ground — die alte Stufe (#5d6975, ~3.5:1) riss WCAG AA fuer Kleintext */
+  --text-dim: #79838f;
+
+  /* Brand: SaMu-Markenblau aus Logo, Visitenkarte und Fahrzeug. Die dunkle
+     Fläche ist das Anthrazit der frisch beschichteten Dächer — der Akzent
+     ist das tiefe Blau der Beschichtung, in das die Wetter-Rampe in
+     script.js hineinläuft (WEATHERED → COATED). */
+  --spark: #2b7de1;
+  --spark-bright: #6fb3ff;
+  --spark-deep: #123f78;
+  --spark-glow: rgba(43, 125, 225, 0.35);
+  /* Dunkle Navy-Schrift auf den Blau-Flächen — HiVis-Kontrast wie auf der
+     Baustelle, hält ~4,6:1 auf --spark und ~8,7:1 auf --spark-bright. */
+  --on-spark: #081426;
+
+  /* Der kalkige Ton der unbeschichteten Fläche. Nur die Beschichtungsfront
+     der Überschrift greift darauf zu — der Rest kommt aus dem Ramp in JS. */
+  --matte: #7e7367;
+
+  /* Heißmetall (weißglühend → Eisblau → tiefes Markenblau): die
+     Beschichtungsfront im Hero wischt diesen Verlauf frei, als läge die
+     Zeile gerade erst unter dem Sprühstrahl. */
+  --hotmetal: linear-gradient(180deg, #ffffff 0%, #cfe6ff 32%, #5ea4f2 55%, #1e5cb8 72%, #b9d9ff 100%);
+
+  /* Abgedunkeltes WhatsApp-Grün der mobilen Callbar. Läuft wie --spark über
+     die Wetter-Rampe in script.js (WEATHERED/COATED), damit die Sekundäraktion
+     am Seitenanfang nicht die noch entsättigte Primäraktion überstrahlt.
+     Der Wert hier ist der Endzustand. */
+  --wa: #0d7d3f;
+
+  --radius: 4px;
+  --radius-lg: 14px;
+  --max: 1200px;
+
+  /* One shared "luxury" curve for every transition on the page */
+  --lux: cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* Roof pitch angle — used for every diagonal on the page */
+  --pitch: 2.6vw;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 88px;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--ground);
+  color: var(--text);
+  font-family: "Barlow", "Segoe UI", Arial, sans-serif;
+  font-size: 17px;
+  line-height: 1.62;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+img { max-width: 100%; display: block; }
+
+/* Filmkorn über der ganzen Seite: lässt die Flächen fotografiert statt
+   gerendert wirken. Statisch (kein Motion-Problem), Zeiger gehen durch,
+   und es liegt bewusst auch über Lightbox und Header. Kein Blend-Mode:
+   overlay zwang den Browser, die Korn-Ebene bei jeder Aktualisierung neu
+   mit dem Seiteninhalt zu mischen — die etwas höhere Opacity trägt den
+   Eindruck jetzt allein. */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 500;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.55'/></svg>");
+  opacity: 0.06;
+  pointer-events: none;
+}
+
+/* Hintergrund-Aura: große, weiche Leuchtflecke hinter dem Inhalt. Die Farbe
+   kommt aus --spark-glow und läuft damit über die Wetter-Rampe in script.js —
+   oben (verwittert) fast unsichtbar, nach unten wächst das Leuchten mit der
+   Beschichtung. Liegt bei z-index -1 und scheint nur dort durch, wo Sektionen
+   keinen eigenen Grund haben; script.js versetzt die Flecke zusätzlich in
+   drei Tiefen, damit sie unterschiedlich schnell mit dem Scroll driften. */
+.bg-aura {
+  position: fixed;
+  inset: -14%;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.bg-aura i {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 50%, var(--spark-glow), rgba(43, 125, 225, 0) 62%);
+}
+
+.bg-aura .a1 { width: 58vmax; height: 58vmax; top: -10%; right: -12%; opacity: 0.6; }
+.bg-aura .a2 { width: 44vmax; height: 44vmax; top: 36%; left: -13%; opacity: 0.45; }
+.bg-aura .a3 { width: 50vmax; height: 50vmax; bottom: -16%; left: 26%; opacity: 0.35; }
+
+a { color: inherit; }
+
+/* Kein 300-ms-Doppel-Tap-Zoom auf interaktiven Flächen, und der Tap-Blitz
+   bekommt einen warmen Markenton statt dem System-Grau. */
+a, button, [role="button"] {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: rgba(43, 125, 225, 0.2);
+}
+
+::selection { background: var(--spark); color: var(--on-spark); }
+
+:focus-visible {
+  outline: 2px solid var(--spark-bright);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* Skip-Link: unsichtbar, bis er per Tastatur Fokus bekommt */
+.skip-link {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  z-index: 400;
+  background: var(--spark);
+  color: var(--on-spark);
+  padding: 12px 20px;
+  border-radius: var(--radius);
+  font-weight: 600;
+  text-decoration: none;
+  transform: translateY(-300%);
+  transition: transform 0.25s var(--lux);
+}
+
+.skip-link:focus-visible {
+  transform: translateY(0);
+}
+
+.container {
+  width: 100%;
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: 0 clamp(20px, 5vw, 44px);
+}
+
+/* ---------- Typography system ---------- */
+
+h1, h2, h3 {
+  font-family: "Archivo Black", "Arial Black", sans-serif;
+  font-weight: 400;
+  line-height: 1.04;
+  letter-spacing: -0.015em;
+  text-wrap: balance;
+  margin: 0;
+}
+
+.label {
+  font-family: "Barlow Condensed", "Arial Narrow", sans-serif;
+  font-weight: 600;
+  font-size: 0.94rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--spark-bright);
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.label::before {
+  content: "";
+  width: 26px;
+  height: 2px;
+  background: var(--spark);
+  flex-shrink: 0;
+}
+
+.metal {
+  background: var(--hotmetal);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+
+/* ---------- Scroll progress ---------- */
+
+.progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  width: 100%;
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  background: linear-gradient(90deg, var(--spark-deep), var(--spark), var(--spark-bright));
+  z-index: 200;
+  will-change: transform;
+}
+
+/* ---------- Header ---------- */
+
+.site-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 120;
+  transition: background 0.35s ease, border-color 0.35s ease, backdrop-filter 0.35s ease;
+  border-bottom: 1px solid transparent;
+}
+
+.site-header.stuck {
+  /* Weniger Blur (14 → 6 px) und dafür opakerer Grund: backdrop-filter ist
+     teuer, das leicht dunklere Panel trägt die Absetzung optisch mit. */
+  background: rgba(7, 9, 12, 0.92);
+  backdrop-filter: blur(6px) saturate(140%);
+  border-bottom-color: var(--line);
+}
+
+.nav {
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: 18px clamp(20px, 5vw, 44px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.brand {
+  display: block;
+  line-height: 0;
+  flex-shrink: 0;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.brand img {
+  height: clamp(42px, 5vw, 62px);
+  width: auto;
+  transition: opacity 0.25s;
+}
+
+.brand:hover img { opacity: 0.86; }
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: clamp(18px, 2.4vw, 34px);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-links a {
+  font-family: "Barlow Condensed", sans-serif;
+  font-size: 1.02rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  text-decoration: none;
+  position: relative;
+  /* "Über uns" brach sonst knapp oberhalb des Mobil-Umbruchs in zwei Zeilen. */
+  white-space: nowrap;
+  padding: 4px 0;
+  transition: color 0.25s;
+}
+
+.nav-links a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 2px;
+  width: 100%;
+  background: var(--spark);
+  transform: scaleX(0);
+  transform-origin: 100% 50%;
+  transition: transform 0.4s var(--lux);
+}
+
+.nav-call { display: none; }
+
+.nav-links a:hover { color: #fff; }
+.nav-links a:hover::after,
+.nav-links a.active::after { transform: scaleX(1); transform-origin: 0 50%; }
+.nav-links a.active { color: #fff; }
+
+.nav-phone {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  background: var(--spark);
+  color: var(--on-spark);
+  padding: 11px 20px;
+  border-radius: var(--radius);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.98rem;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  transition: background 0.25s, box-shadow 0.25s, transform 0.25s;
+}
+
+.nav-phone:hover {
+  background: var(--spark-bright);
+  box-shadow: 0 10px 30px var(--spark-glow);
+  transform: translateY(-1px);
+}
+
+.nav-toggle {
+  display: none;
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--line-bright);
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: var(--radius);
+  cursor: pointer;
+  padding: 0;
+  position: relative;
+}
+
+.nav-toggle span {
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  height: 2px;
+  background: #fff;
+  transition: transform 0.3s, opacity 0.2s;
+}
+
+.nav-toggle span:nth-child(1) { top: 15px; }
+.nav-toggle span:nth-child(2) { top: 21px; }
+.nav-toggle span:nth-child(3) { top: 27px; }
+
+.nav-toggle[aria-expanded="true"] span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+.nav-toggle[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+.nav-toggle[aria-expanded="true"] span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+
+/* ---------- Hero ---------- */
+
+.hero {
+  position: relative;
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  padding: 140px 0 120px;
+}
+
+.hero-media {
+  position: absolute;
+  inset: -12% 0 -12% 0;
+  background-position: center 30%;
+  background-size: cover;
+  background-repeat: no-repeat;
+  z-index: 0;
+  /* Scroll parallax comes from GSAP (script.js); the slow breathing zoom lives
+     in the kenburns keyframes. The individual `scale` property and GSAP's
+     `transform` compose, so the two never fight over one property. Kein
+     dauerhaftes will-change: die Ebene pausiert ohnehin, sobald der Hero
+     aus dem Viewport ist (.offscreen unten). */
+  animation: kenburns 26s ease-in-out infinite alternate;
+}
+
+@keyframes kenburns {
+  from { scale: 1.05; }
+  to { scale: 1.16; }
+}
+
+/* Warmes Arbeitslicht, das durch den Hero driftet */
+.hero-glow {
+  position: absolute;
+  z-index: 1;
+  width: 62vw;
+  height: 62vw;
+  left: -18vw;
+  bottom: -28vw;
+  background: radial-gradient(closest-side, rgba(43, 125, 225, 0.26), transparent 70%);
+  filter: blur(46px);
+  animation: glowDrift 14s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+
+@keyframes glowDrift {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(7vw, -4vw, 0); }
+}
+
+/* Endlosanimationen ruhen, sobald der Hero aus dem Viewport ist —
+   ein IntersectionObserver in script.js toggelt .offscreen. Deckt Kenburns,
+   Lichtdrift und das wandernde Metallband der Überschrift ab (metalShift
+   läuft sonst als background-position-Animation auf dem Compositor-feindlichen
+   Repaint-Pfad, auch wenn niemand hinsieht). */
+.hero.offscreen .hero-media,
+.hero.offscreen .hero-glow,
+.hero.offscreen h1 .line > span.metal {
+  animation-play-state: paused;
+}
+
+/* Fine film grain — barely visible, but it is what makes the hero feel shot
+   rather than rendered. Wie das Seitenkorn ohne Blend-Mode (Jank), die
+   Opacity trägt den Eindruck allein. */
+.hero-grain {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.55'/></svg>");
+  opacity: 0.09;
+  pointer-events: none;
+}
+
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background:
+    radial-gradient(115% 85% at 72% 26%, transparent 42%, rgba(7, 9, 12, 0.5) 100%),
+    linear-gradient(105deg, rgba(7, 9, 12, 0.95) 0%, rgba(7, 9, 12, 0.74) 42%, rgba(7, 9, 12, 0.38) 100%),
+    linear-gradient(180deg, rgba(7, 9, 12, 0.7) 0%, transparent 30%, rgba(7, 9, 12, 0.97) 100%);
+}
+
+/* Brand-blue pitch-line sweeping across the hero — the roof angle motif */
+.hero::after {
+  content: "";
+  position: absolute;
+  left: -5%;
+  right: -5%;
+  bottom: 16%;
+  height: 1px;
+  z-index: 2;
+  background: linear-gradient(90deg, transparent, var(--spark) 35%, var(--spark-bright) 55%, transparent);
+  opacity: 0.5;
+  transform: rotate(-2.4deg);
+}
+
+.hero .container { position: relative; z-index: 3; }
+
+/* Der Freisteller steht rechts an der Kante und laeuft unten aus dem Bild, als
+   stuende er auf dem Dach, das die Sektion darunter zeigt. Er liegt ueber dem
+   Hintergrundfoto, aber unter dem Text — Ueberschrift und Buttons behalten
+   immer die Oberhand.
+   Position und GSAP-Scrub sitzen auf der Huelle (.hero-figure-wrap), Filter
+   und Maske auf dem Bild: der Scrub wuerde das mit drop-shadow und Maske
+   versehene Bild sonst pro Frame neu rastern lassen. */
+.hero-figure-wrap {
+  position: absolute;
+  right: -20px;
+  bottom: 0;
+  z-index: 1;
+  /* Auch an der Breite gedeckelt: auf einem 1280er Schirm wuerde eine rein
+     hoehenbezogene Figur so breit, dass sein Kopf in die Ueberschrift ragt. */
+  height: min(74vh, 46vw, 660px);
+  pointer-events: none;
+}
+
+.hero-figure {
+  height: 100%;
+  width: auto;
+  filter: drop-shadow(-24px 18px 46px rgba(4, 6, 9, 0.75));
+  /* Unten und an der angeschnittenen Armkante loest sich das Bild auf, statt
+     als gerade Linie zu enden. */
+  -webkit-mask-image:
+    linear-gradient(180deg, #000 76%, transparent 99%),
+    linear-gradient(90deg, transparent 0, #000 14%);
+  -webkit-mask-composite: source-in;
+  mask-image:
+    linear-gradient(180deg, #000 76%, transparent 99%),
+    linear-gradient(90deg, transparent 0, #000 14%);
+  mask-composite: intersect;
+}
+
+.hero-inner {
+  max-width: 940px;
+  position: relative;
+  z-index: 2;
+}
+
+/* Der Text muss vor dem Freisteller enden — eine Ueberschrift, durch die ein
+   Kopf ragt, ist keine Komposition, sondern eine Kollision.
+   Gedrosselt wird der Schriftgrad, NICHT die Spaltenbreite: .line traegt
+   overflow:hidden fuer die Maskenanimation, eine schmalere Spalte wuerde das
+   laengste Wort einfach abschneiden statt es umzubrechen. */
+@media (min-width: 1241px) {
+  .hero h1 { font-size: clamp(3.4rem, 6vw, 5.6rem); }
+}
+
+/* Darunter reicht der Platz nicht mehr fuer beides nebeneinander. Er tritt
+   zurueck und wird zur Atmosphaere hinter dem Text. */
+@media (max-width: 1240px) {
+  .hero-figure-wrap {
+    right: -12vw;
+    height: min(60vh, 540px);
+    opacity: 0.42;
+  }
+  .hero-figure {
+    filter: drop-shadow(-16px 12px 34px rgba(4, 6, 9, 0.7)) saturate(0.7);
+  }
+}
+
+@media (max-width: 760px) {
+  .hero-figure-wrap { display: none; }
+}
+
+.hero h1 {
+  font-size: clamp(2.3rem, 8.8vw, 7.2rem);
+  margin: 22px 0 0;
+  line-height: 0.94;
+  letter-spacing: -0.035em;
+  text-transform: uppercase;
+}
+
+.hero h1 .line { display: block; }
+
+/* Masked line reveal: the mask stays, the rise itself is driven by GSAP
+   (script.js). Without JS or with reduced motion the lines simply stand
+   still — visible, nothing hidden. */
+.hero h1 .line > span { display: block; }
+
+/* Die Beschichtungsfront.
+   Zwei Hintergrundebenen auf denselben Buchstaben: unten das Heißmetall,
+   darüber eine stumpfe Deckschicht, die bei --coat hart abreisst. Wandert
+   --coat von 0% auf 100%, laeuft eine harte Kante ueber die Schrift und
+   laesst gluehendes Metall zurueck — genau die Kante, die auf dem Dach
+   entsteht. script.js fuehrt sie.
+   Default ist 100%: ohne JS steht die Zeile fertig beschichtet da. */
+.hero h1 .line > span.metal {
+  --coat: 100%;
+  background-image:
+    linear-gradient(96deg, transparent 0 var(--coat), var(--matte) var(--coat) 100%),
+    var(--hotmetal);
+  background-size: 100% 100%, 100% 220%;
+  background-repeat: no-repeat;
+  animation: metalShift 9s ease-in-out 1.8s infinite alternate;
+}
+
+/* metalShift verschiebt nur das Metallband, nicht die Deckschicht. */
+@keyframes metalShift {
+  from { background-position: 0 0, 50% 0%; }
+  to { background-position: 0 0, 50% 100%; }
+}
+
+.hero h1 .accent {
+  /* inline-block: der Marker-SVG darunter misst sich an der Wortbreite,
+     nicht an der Zeilenbreite (die Spans sind sonst display:block). */
+  display: inline-block;
+  position: relative;
+  color: var(--spark-bright);
+  -webkit-text-fill-color: var(--spark-bright);
+}
+
+/* Filzstift-Strich unter "Stark.": script.js zieht ihn nach dem Auftritt
+   per strokeDash nach (wie mit der Hand unterstrichen). Der CSS-Default ist
+   der fertige Strich — ohne JS und bei reduzierter Bewegung steht er da. */
+.hero h1 .accent .stroke {
+  position: absolute;
+  left: -1%;
+  bottom: -0.2em;
+  width: 102%;
+  height: 0.3em;
+  overflow: visible;
+}
+
+.hero h1 .accent .stroke path {
+  fill: none;
+  /* Festes Markenblau, nicht der Token: der Hero liegt im verwitterten
+     Bereich der Seite, dort ist --spark noch ein unsichtbar dunkles
+     Graubraun. Die Beschichtungsfront ist ueber dieser Zeile aber schon
+     durch — der Strich ist ihre blaue Markierung. */
+  stroke: #6fb3ff;
+  stroke-width: 5;
+  stroke-linecap: round;
+  opacity: 0.92;
+}
+
+.hero-lead {
+  max-width: 620px;
+  margin: 30px 0 0;
+  font-size: clamp(1.05rem, 1.5vw, 1.22rem);
+  color: var(--text-muted);
+}
+
+.hero-lead strong { color: var(--text); font-weight: 600; }
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 38px;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 11px;
+  padding: 16px 30px;
+  border-radius: var(--radius);
+  font-family: "Barlow Condensed", sans-serif;
+  font-size: 1.1rem;
+  font-weight: 600;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border: 1px solid transparent;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.3s var(--lux), box-shadow 0.3s, background 0.3s, border-color 0.3s, color 0.3s;
+}
+
+.btn-primary {
+  background: var(--spark);
+  color: var(--on-spark);
+  box-shadow: 0 14px 34px -12px var(--spark-glow);
+}
+
+/* Glanzstreifen, der beim Hover durch den Button wandert */
+.btn-primary::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -85%;
+  width: 55%;
+  height: 100%;
+  background: linear-gradient(105deg, transparent, rgba(255, 255, 255, 0.38), transparent);
+  transform: skewX(-18deg);
+  transition: left 0.75s var(--lux);
+  pointer-events: none;
+}
+
+.btn-primary:hover::after { left: 135%; }
+
+.btn-primary:hover {
+  background: var(--spark-bright);
+  transform: translateY(-3px);
+  box-shadow: 0 20px 44px -12px var(--spark-glow);
+}
+
+.btn-ghost {
+  border-color: var(--line-bright);
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.btn-ghost:hover {
+  border-color: var(--spark);
+  color: #fff;
+  transform: translateY(-3px);
+  background: rgba(43, 125, 225, 0.08);
+}
+
+.scroll-cue {
+  position: absolute;
+  left: 50%;
+  bottom: 34px;
+  transform: translateX(-50%);
+  z-index: 4;
+  font-family: "Barlow Condensed", sans-serif;
+  font-size: 0.76rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+}
+
+.scroll-cue .rail {
+  width: 1px;
+  height: 46px;
+  background: linear-gradient(180deg, var(--spark), transparent);
+  position: relative;
+  overflow: hidden;
+}
+
+.scroll-cue .rail::after {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: 0;
+  width: 100%;
+  height: 50%;
+  background: var(--spark-bright);
+  animation: railRun 2.1s ease-in-out infinite;
+}
+
+@keyframes railRun {
+  0% { top: -50%; }
+  100% { top: 110%; }
+}
+
+/* ---------- Marquee strip ---------- */
+
+/* Dunkel und zurückhaltend: Ghost-Outline-Worte, jedes zweite in Blau */
+.strip {
+  background: var(--panel);
+  padding: 16px 0;
+  overflow: hidden;
+  position: relative;
+  border-block: 1px solid var(--line);
+}
+
+/* Der durchlaufende Text würde sonst hart unter dem Pause-Button kleben —
+   eine Blende am rechten Rand lässt ihn dort weich aus dem Bild laufen. */
+.strip::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: clamp(96px, 20vw, 150px);
+  background: linear-gradient(90deg, transparent, var(--panel) 60%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Ohne JS läuft das Band als CSS-Animation. Mit JS übernimmt GSAP (script.js):
+   die Animation wird abgeschaltet und durch einen Tween ersetzt, dessen Tempo
+   an der Scroll-Geschwindigkeit hängt. Deshalb der .js-marquee-Schalter. */
+.marquee {
+  display: flex;
+  width: max-content;
+  animation: slide 38s linear infinite;
+}
+
+.marquee.js-marquee { animation: none; }
+
+.marquee-group {
+  display: flex;
+  align-items: center;
+  gap: 46px;
+  padding-right: 46px;
+  font-family: "Barlow Condensed", sans-serif;
+  font-size: 1.12rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.marquee-group span {
+  display: inline-flex;
+  align-items: center;
+  gap: 46px;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(139, 152, 166, 0.65);
+}
+
+.marquee-group span:nth-child(even) {
+  color: var(--spark-bright);
+  -webkit-text-stroke: 0;
+}
+
+.marquee-group span::after {
+  content: "";
+  width: 6px;
+  height: 6px;
+  background: var(--spark);
+  transform: rotate(45deg);
+}
+
+@keyframes slide {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+.strip:hover .marquee,
+.strip.paused .marquee { animation-play-state: paused; }
+
+/* Pause-Button für das Endlos-Band: Bewegung über 5 s neben Inhalt braucht
+   einen per Tastatur erreichbaren Stopp, Hover allein reicht nicht. */
+.marquee-pause {
+  position: absolute;
+  right: clamp(12px, 2.5vw, 28px);
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+  font-family: "Space Mono", ui-monospace, monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  background: var(--panel);
+  border: 1px solid var(--line-bright);
+  border-radius: var(--radius);
+  padding: 6px 12px;
+  cursor: pointer;
+  transition: color 0.25s, border-color 0.25s;
+}
+
+.marquee-pause:hover,
+.marquee-pause[aria-pressed="true"] {
+  color: var(--text);
+  border-color: var(--spark);
+}
+
+/* ---------- Sections ---------- */
+
+.section { padding: clamp(92px, 12vw, 160px) 0; position: relative; }
+
+.section-panel {
+  background: var(--panel);
+  clip-path: polygon(0 var(--pitch), 100% 0, 100% calc(100% - var(--pitch)), 0 100%);
+  margin-block: calc(var(--pitch) * -0.5);
+  padding-block: clamp(118px, 13.5vw, 196px);
+}
+
+/* Panel-Kanten-Naht: die Schrägkante der Panels wird beim Reinscrollen
+   eingeschweißt (script.js, Scrub) — der CSS-Default ist die fertige Naht,
+   damit No-JS und Reduced-Motion sie komplett zeigen. Die Schrägung der
+   Kante ist viewport-unabhängig konstant (Pitch steht in vw), deshalb
+   reichen zwei feste Winkel; --seam-slope liest script.js für die Bahn
+   des Schweißpunkts. */
+.panel-seam {
+  --seam-slope: 0.026;
+  position: absolute;
+  top: calc(var(--pitch) + 3px);
+  left: 0;
+  width: 100%;
+  height: 0;
+  transform: rotate(-1.4907deg);
+  transform-origin: 0 0;
+  pointer-events: none;
+  z-index: 3;
+}
+
+@media (max-width: 860px) {
+  .panel-seam { --seam-slope: 0.034; transform: rotate(-1.9475deg); }
+}
+
+.panel-seam .bead {
+  display: block;
+  height: 4px;
+  margin-top: -2px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--spark-deep) 0%, var(--spark) 45%, var(--spark-bright) 100%);
+  box-shadow: 0 0 10px rgba(111, 179, 255, 0.35), 0 0 3px rgba(111, 179, 255, 0.5);
+  transform-origin: 0 50%;
+}
+
+.section-head {
+  max-width: 720px;
+  margin-bottom: clamp(46px, 6vw, 76px);
+  position: relative;
+}
+
+/* Riesige Ghost-Nummer hinter jeder Sektion — Dramaturgie beim Scrollen */
+.section-head[data-num]::before,
+.about[data-num]::before {
+  content: attr(data-num);
+  position: absolute;
+  top: -0.42em;
+  right: -0.06em;
+  font-family: "Archivo Black", sans-serif;
+  font-size: clamp(5.2rem, 12vw, 10.5rem);
+  line-height: 1;
+  color: transparent;
+  -webkit-text-stroke: 1px var(--line-bright);
+  opacity: 0.38;
+  pointer-events: none;
+  -webkit-mask-image: linear-gradient(180deg, #000 30%, transparent 96%);
+  mask-image: linear-gradient(180deg, #000 30%, transparent 96%);
+}
+
+.about[data-num] { position: relative; }
+
+.section-head h2 {
+  font-size: clamp(2.15rem, 5.4vw, 4rem);
+  margin: 18px 0 16px;
+  text-transform: uppercase;
+}
+
+.section-head p {
+  color: var(--text-muted);
+  margin: 0;
+  font-size: 1.08rem;
+  max-width: 60ch;
+}
+
+/* ---------- Services ---------- */
+
+.services {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.service {
+  background: var(--ground);
+  padding: clamp(30px, 3.4vw, 44px);
+  position: relative;
+  transition: background 0.4s ease;
+  overflow: hidden;
+}
+
+.service::before {
+  content: "";
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--spark), var(--spark-bright));
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  transition: transform 0.5s var(--lux);
+  z-index: 2;
+}
+
+/* Spotlight, der dem Cursor über der Karte folgt (--mx/--my via script.js) */
+.service::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 50%), rgba(43, 125, 225, 0.13), transparent 65%);
+  opacity: 0;
+  transition: opacity 0.45s;
+  pointer-events: none;
+}
+
+.service:hover { background: var(--panel-2); }
+.service:hover::before { transform: scaleX(1); }
+.service:hover::after { opacity: 1; }
+
+.service-icon {
+  width: 54px;
+  height: 54px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--line-bright);
+  border-radius: var(--radius);
+  background: rgba(43, 125, 225, 0.07);
+  margin-bottom: 24px;
+  transition: border-color 0.35s, background 0.35s, transform 0.35s;
+}
+
+.service-icon svg { width: 26px; height: 26px; stroke: var(--spark-bright); fill: none; stroke-width: 1.6; }
+
+.service:hover .service-icon {
+  border-color: var(--spark);
+  background: rgba(43, 125, 225, 0.16);
+  transform: translateY(-3px);
+}
+
+.service h3 {
+  font-size: 1.24rem;
+  text-transform: uppercase;
+  letter-spacing: -0.005em;
+  margin-bottom: 12px;
+}
+
+.service p {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 0.99rem;
+}
+
+/* The seventh service would otherwise sit alone in a three-column row. */
+.service-wide { grid-column: 1 / -1; }
+
+@media (min-width: 900px) {
+  .service-wide {
+    display: grid;
+    grid-template-columns: auto minmax(0, 22ch) minmax(0, 1fr);
+    align-items: center;
+    column-gap: clamp(26px, 3.4vw, 52px);
+  }
+
+  .service-wide .service-icon { margin-bottom: 0; }
+  .service-wide h3 { margin-bottom: 0; }
+  .service-wide p { grid-column: 3; grid-row: 1; }
+
+  .service-wide .service-tag {
+    grid-column: 2 / -1;
+    grid-row: 2;
+    margin-top: 10px;
+  }
+}
+
+.service-tag {
+  display: block;
+  margin-top: 18px;
+  font-family: "Space Mono", ui-monospace, monospace;
+  font-size: 0.82rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+/* ---------- Ablauf (a real sequence, so the numbers carry meaning) ---------- */
+
+.steps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  /* Anker fuer Schweißpunkt und Funken (JS-only Deko-Ebene) */
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: clamp(20px, 2.6vw, 34px);
+}
+
+/* Five steps, so the row is only ever split at a count that divides evenly. */
+@media (min-width: 700px) {
+  .steps { grid-template-columns: repeat(3, 1fr); }
+}
+
+@media (min-width: 1020px) {
+  .steps { grid-template-columns: repeat(5, 1fr); }
+}
+
+.step {
+  position: relative;
+  padding-top: 26px;
+  border-top: 1px solid var(--line-bright);
+  /* Zollstock: lange und kurze Striche entlang der Oberkante jeder Station,
+     darüber legt die Schweißnaht-Animation ihre heiße Linie. */
+  background-image:
+    repeating-linear-gradient(90deg, var(--line-bright) 0 1px, transparent 1px calc(100% / 10)),
+    repeating-linear-gradient(90deg, var(--line) 0 1px, transparent 1px calc(100% / 50));
+  background-size: 100% 9px, 100% 5px;
+  background-repeat: no-repeat;
+  background-position: 0 1px;
+  transition: border-color 0.35s;
+}
+
+.step:hover { border-top-color: var(--spark); }
+
+/* Schweißnaht entlang der oberen Kante jeder Station. GSAP "legt" sie beim
+   Scrollen (scaleX 0 → 1, gestaffelt 1 → 5); der CSS-Default ist die fertige
+   Naht, damit No-JS und Reduced-Motion den Endzustand zeigen. Vier Pixel mit
+   Glow — eine Naht, die man von der Zollstock-Struktur darunter unterscheidet. */
+.step .seam {
+  position: absolute;
+  top: -2px;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--spark-deep) 0%, var(--spark) 45%, var(--spark-bright) 100%);
+  box-shadow: 0 0 10px rgba(111, 179, 255, 0.35), 0 0 3px rgba(111, 179, 255, 0.5);
+  transform-origin: 0 50%;
+  pointer-events: none;
+}
+
+/* Sobald eine Naht sitzt, füllt sich die Stationsnummer */
+.step.welded .step-num { color: var(--spark); }
+
+/* Schweißpunkt + Lichtwurf + Funken: rein dekorative Ebene, die script.js nur
+   ohne Reduced-Motion ins DOM hängt. Ohne JS existieren die Elemente nicht —
+   der CSS-Default bleibt die fertige Naht. Der Punkt ist ein Wrapper, dessen
+   Kern (<b>) per GSAP flackert wie ein Lichtbogen; der Lichtwurf (.weld-glow)
+   legt den Schein auf die Stationen darunter. Farbrampe wie die
+   Beschichtungsfront: weißglühend → Eisblau → Markenblau. */
+.weld-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 20px;
+  height: 20px;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.weld-tip b {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle, #fff 0%, #eaf4ff 22%, var(--spark-bright) 46%, rgba(111, 179, 255, 0) 74%);
+  box-shadow: 0 0 18px 5px rgba(111, 179, 255, 0.65), 0 0 46px 14px rgba(43, 125, 225, 0.35);
+}
+
+.weld-glow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 170px;
+  height: 96px;
+  background: radial-gradient(ellipse, rgba(111, 179, 255, 0.22) 0%, rgba(43, 125, 225, 0.08) 45%, rgba(43, 125, 225, 0) 70%);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* KEIN overflow:hidden hier — die Funken stieben von der Oberkante der
+   Stationen nach oben und würden sonst am Container-Rand abgeschnitten
+   (im einzeiligen Wide-Layout waren sie damit komplett unsichtbar). */
+.weld-sparks {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.weld-sparks i {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 0 7px 2px var(--spark-bright), 0 0 3px #fff;
+  opacity: 0;
+}
+
+.step-num {
+  font-family: "Space Mono", ui-monospace, monospace;
+  font-weight: 700;
+  font-size: 2.2rem;
+  line-height: 1;
+  color: transparent;
+  /* Leichte Füllung hinter dem Outline: im verwitterten Ramp-Bereich war die
+     reine 1-px-Kontur fast unsichtbar. Browser ohne color-mix behalten das
+     reine Outline aus der Zeile darüber. */
+  color: color-mix(in srgb, var(--spark) 20%, transparent);
+  -webkit-text-stroke: 1px var(--spark);
+  display: block;
+  margin-bottom: 14px;
+  transition: color 0.35s, -webkit-text-stroke-color 0.35s;
+}
+
+.step:hover .step-num {
+  color: var(--spark);
+  -webkit-text-stroke-color: transparent;
+}
+
+.step h3 {
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.step p {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 0.97rem;
+}
+
+/* ---------- Gallery ----------
+   Editorial-Grid statt Fahrt am Dach entlang: zwölf Spalten, jede Kachel mit
+   eigenem Seitenverhältnis, Nummer und Bildunterschrift stehen ruhig unter
+   dem Bild. Keine Hüllen, keine Scrubs — die Sektion atmet. */
+
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: clamp(18px, 3vw, 34px);
+  align-items: start;
+}
+
+.shot {
+  position: relative;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  background: none;
+  cursor: zoom-in;
+  display: block;
+  width: 100%;
+}
+
+.shot:nth-child(1) { grid-column: span 7; }
+.shot:nth-child(2) { grid-column: span 5; }
+.shot:nth-child(3),
+.shot:nth-child(4),
+.shot:nth-child(5) { grid-column: span 4; }
+.shot:nth-child(6) { grid-column: span 8; }
+.shot:nth-child(7) { grid-column: span 4; }
+
+.shot img {
+  display: block;
+  width: 100%;
+  height: auto; /* sonst schlägt das height-Attribut das aspect-ratio der Kachel */
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  border-radius: var(--radius);
+  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  /* Warm statt entsättigt: die Baustellenfotos sind der Charakter-Beweis,
+     sie dürfen nach Dach und Sonne aussehen, nicht nach Stock. */
+  filter: saturate(1.02) sepia(0.07) contrast(1.03);
+}
+
+/* Die Kachel-Formate folgen der Bildwahl: Querformat für die beiden
+   großen Flächen, Hochformat für die Detail- und Abklebe-Aufnahmen. */
+.shot:nth-child(1) img { aspect-ratio: 3 / 2; }
+.shot:nth-child(6) img { aspect-ratio: 4 / 3; }
+.shot:nth-child(7) img { aspect-ratio: 4 / 3; }
+
+.shot:hover img {
+  transform: scale(1.02);
+  box-shadow: 0 14px 34px rgba(4, 6, 9, 0.45);
+}
+
+.shot figcaption {
+  margin-top: 12px;
+  font-family: "Newsreader", Georgia, serif;
+  font-style: italic;
+  font-size: 1.02rem;
+  color: var(--text-muted);
+  text-align: left;
+}
+
+.shot-num {
+  font-family: "Space Mono", monospace;
+  font-style: normal;
+  font-size: 0.82rem;
+  color: var(--spark);
+  margin-right: 10px;
+}
+
+/* ---------- Lightbox ---------- */
+
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  background: rgba(4, 6, 8, 0.94);
+  backdrop-filter: blur(8px);
+  display: grid;
+  place-items: center;
+  padding: 5vh 5vw;
+  /* Scroll-Ketten bleiben im Dialog, statt die Seite darunter mitzuziehen. */
+  overscroll-behavior: contain;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.32s, visibility 0.32s;
+}
+
+.lightbox.open { opacity: 1; visibility: visible; }
+
+/* Die Großansicht bekommt kein eigenes Einblenden mehr: das angeklickte Bild
+   wandert als derselbe DOM-Knoten aus dem Raster hierher (Flip in script.js).
+   Eine eigene Transition oder ein Ruhe-Scale würden sich mit dem Flug
+   überlagern und ihn ruckeln lassen — deshalb hier beides bewusst aus. */
+.lightbox img {
+  max-width: 100%;
+  max-height: 90vh;
+  object-fit: contain;
+  border-radius: var(--radius-lg);
+  transform: none;
+  transition: none;
+  filter: none;
+}
+
+/* Platzhalter, der die Rückkehr des Bildes ins Raster markiert. */
+.shot-slot { display: none; }
+
+.lightbox-close {
+  position: absolute;
+  top: 22px;
+  right: 26px;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  border: 1px solid var(--line-bright);
+  background: rgba(255, 255, 255, 0.05);
+  color: #fff;
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 0.25s, border-color 0.25s;
+}
+
+.lightbox-close:hover { background: rgba(43, 125, 225, 0.25); border-color: var(--spark); }
+
+/* ---------- About ---------- */
+
+.about {
+  display: grid;
+  grid-template-columns: 1.02fr 1fr;
+  gap: clamp(38px, 5vw, 76px);
+  align-items: center;
+}
+
+.about-media {
+  position: relative;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  border: 1px solid var(--line);
+  aspect-ratio: 3 / 4;
+}
+
+.about-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 62% 38%;
+  transform: scale(1.28);
+}
+
+.about-media::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  box-shadow: inset 0 0 90px rgba(7, 9, 12, 0.75);
+  pointer-events: none;
+}
+
+.about h2 {
+  font-size: clamp(1.9rem, 4vw, 3rem);
+  margin: 18px 0 20px;
+  text-transform: uppercase;
+}
+
+.about p { color: var(--text-muted); margin: 0 0 10px; }
+
+.checks {
+  list-style: none;
+  padding: 0;
+  margin: 30px 0 0;
+  display: grid;
+  gap: 14px;
+}
+
+.checks li {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  font-weight: 500;
+  color: var(--text);
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--line);
+}
+
+.checks li:last-child { border-bottom: 0; padding-bottom: 0; }
+
+.checks li svg {
+  width: 19px;
+  height: 19px;
+  flex-shrink: 0;
+  margin-top: 4px;
+  stroke: var(--spark-bright);
+  fill: none;
+  stroke-width: 2.2;
+}
+
+/* Saschas Satz — die persönlichste Zeile der Seite bekommt die
+   persönlichste Schrift (Newsreader Italic), abgezählt per Space Mono. */
+.quote {
+  margin: 26px 0 0;
+  padding: 2px 0 2px 22px;
+  border-left: 2px solid var(--spark);
+}
+
+.quote p {
+  margin: 0;
+  font-family: "Newsreader", Georgia, serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(1.25rem, 2.1vw, 1.55rem);
+  line-height: 1.35;
+  color: var(--text);
+}
+
+.quote cite {
+  display: block;
+  margin-top: 10px;
+  font-family: "Space Mono", ui-monospace, monospace;
+  font-style: normal;
+  font-size: 0.82rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--spark-bright);
+}
+
+/* Screenreader-Text, der nicht sichtbar sein soll (z. B. die Text-Attribution
+   unter dem Zitat, seit die Unterschrift sie visuell ersetzt). */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Unterschrift unter dem Zitat: Outline-SVG, das script.js beim ersten
+   Reinscrollen einmal selbst zeichnet (Mittellinien-Maske #sigDraw, Striche
+   per stroke-dashoffset). CSS-Default ist die komplette Unterschrift — No-JS
+   und Reduced-Motion sehen sie sofort. Tintenfarbe statt Markenblau: eine
+   Unterschrift ist Tinte, kein Logo. */
+.sig {
+  display: block;
+  width: clamp(230px, 32vw, 310px);
+  height: auto;
+  margin-top: 16px;
+  color: var(--text);
+}
+
+/* Stempel auf dem Foto: Kreis-Emblem mit langsam drehendem Ringtext
+   (Reduced-Motion stoppt ihn über die globale Regel). */
+.stamp {
+  position: absolute;
+  right: 14px;
+  bottom: 14px;
+  z-index: 3;
+  width: clamp(96px, 10vw, 132px);
+  height: auto;
+  transform: rotate(-8deg);
+  color: var(--spark-bright);
+  filter: drop-shadow(0 6px 18px rgba(4, 6, 9, 0.6));
+  pointer-events: none;
+}
+
+.stamp-edge { fill: rgba(7, 9, 12, 0.72); stroke: currentColor; stroke-width: 1.4; }
+.stamp-edge-inner { fill: none; stroke: currentColor; stroke-width: 1; }
+
+.stamp-ring {
+  transform-origin: 60px 60px;
+  animation: stampSpin 26s linear infinite;
+}
+
+.stamp-ring text {
+  font-family: "Space Mono", ui-monospace, monospace;
+  font-size: 10.5px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  fill: currentColor;
+}
+
+.stamp-core {
+  font-family: "Archivo Black", sans-serif;
+  font-size: 19px;
+  letter-spacing: 0.02em;
+  fill: currentColor;
+}
+
+@keyframes stampSpin {
+  to { transform: rotate(360deg); }
+}
+
+/* ---------- FAQ ---------- */
+
+.faq-list {
+  display: grid;
+  gap: 14px;
+  max-width: 860px;
+}
+
+.faq-item {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  transition: border-color 0.3s var(--lux), background 0.3s var(--lux);
+}
+
+.faq-item:hover { border-color: var(--line-bright); }
+.faq-item[open] { border-color: var(--line-bright); background: var(--panel-2); }
+
+.faq-item summary {
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 18px;
+  padding: 20px 24px;
+  font-weight: 600;
+  font-size: 1.04rem;
+  touch-action: manipulation;
+}
+
+.faq-item summary::-webkit-details-marker { display: none; }
+
+/* Space-Mono-Plus wie die Messdetails auf dem Zollstock — klappt beim
+   Öffnen zu einem "x" auf. */
+.faq-item summary::after {
+  content: "+";
+  flex: none;
+  font-family: "Space Mono", monospace;
+  font-size: 1.35rem;
+  line-height: 1;
+  color: var(--spark-bright);
+  transition: transform 0.3s var(--lux);
+}
+
+.faq-item[open] summary::after { transform: rotate(45deg); }
+
+.faq-item p {
+  margin: 0;
+  padding: 0 24px 22px;
+  color: var(--text-muted);
+}
+
+.faq-item summary:focus-visible {
+  outline: 2px solid var(--spark-bright);
+  outline-offset: -2px;
+  border-radius: var(--radius-lg);
+}
+
+/* ---------- Contact ---------- */
+
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 18px;
+  margin-bottom: 34px;
+}
+
+/* Two columns rather than four: the e-mail address and the callback note both
+   need room to sit on one line. */
+@media (min-width: 720px) {
+  .contact-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+.contact-card {
+  background: var(--panel-2);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  padding: 34px 30px;
+  text-decoration: none;
+  display: block;
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.3s, transform 0.35s var(--lux), background 0.3s;
+}
+
+/* Spotlight, der dem Cursor folgt (--mx/--my via script.js) */
+.contact-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(380px circle at var(--mx, 50%) var(--my, 50%), rgba(43, 125, 225, 0.14), transparent 65%);
+  opacity: 0;
+  transition: opacity 0.45s;
+  pointer-events: none;
+}
+
+.contact-card:hover {
+  border-color: var(--spark);
+  transform: translateY(-4px);
+  background: rgba(43, 125, 225, 0.06);
+}
+
+.contact-card:hover::after { opacity: 1; }
+
+.contact-card .label { display: flex; margin-bottom: 16px; }
+
+.contact-card .value {
+  display: block;
+  font-family: "Archivo Black", sans-serif;
+  font-size: clamp(0.98rem, 1.2vw, 1.12rem);
+  color: #fff;
+  line-height: 1.34;
+  letter-spacing: -0.01em;
+  overflow-wrap: anywhere;
+}
+
+/* The e-mail address is the longest unbreakable string on the page. */
+.contact-card .value-long { font-size: clamp(0.86rem, 1vw, 0.96rem); }
+
+.contact-card .meta {
+  display: block;
+  margin-top: 8px;
+  font-family: "Newsreader", Georgia, serif;
+  font-style: italic;
+  font-size: 1.05rem;
+  line-height: 1.5;
+  color: var(--text-muted);
+}
+
+.cta-bar {
+  background: linear-gradient(100deg, var(--spark-deep), var(--spark));
+  border-radius: var(--radius-lg);
+  padding: clamp(32px, 4.4vw, 52px);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 26px;
+}
+
+.cta-bar h3 {
+  font-size: clamp(1.4rem, 2.8vw, 2.1rem);
+  color: #fff;
+  text-transform: uppercase;
+  max-width: 22ch;
+}
+
+.cta-bar .btn-primary {
+  background: #fff;
+  color: var(--spark-deep);
+  box-shadow: 0 14px 34px -12px rgba(0, 0, 0, 0.5);
+}
+
+.cta-bar .btn-primary:hover { background: #e8f1ff; }
+
+/* Letzte Sektion vor dem Footer: unter der CTA-Bar kommt nichts mehr, das
+   die volle Panel-Tiefe bräuchte — sonst steht dort nur Leerfläche. */
+#kontakt.section-panel { padding-bottom: clamp(64px, 8vw, 120px); }
+
+/* ---------- Legal ---------- */
+
+.legal { max-width: 780px; }
+.legal h1 { font-size: clamp(1.9rem, 4vw, 2.8rem); text-transform: uppercase; margin-bottom: 30px; }
+.legal h2 { font-size: 1.02rem; text-transform: uppercase; letter-spacing: 0.06em; margin: 34px 0 8px; color: #fff; }
+.legal p { color: var(--text-muted); margin: 0; }
+.legal p + p { margin-top: 10px; }
+.legal a { color: var(--spark-bright); text-decoration: none; }
+.legal a:hover { text-decoration: underline; }
+
+/* ---------- Footer ---------- */
+
+.site-footer {
+  border-top: 1px solid var(--line);
+  padding: 54px 0 40px;
+  background: var(--ground);
+}
+
+.footer-top {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding-bottom: 34px;
+  border-bottom: 1px solid var(--line);
+}
+
+.footer-slogan {
+  font-family: "Archivo Black", sans-serif;
+  font-size: clamp(1.5rem, 3.4vw, 2.4rem);
+  text-transform: uppercase;
+  line-height: 1.06;
+  max-width: 14ch;
+}
+
+.footer-contact {
+  display: grid;
+  gap: 8px;
+  font-size: 1rem;
+  color: var(--text-muted);
+}
+
+.footer-contact a { color: var(--text); text-decoration: none; transition: color 0.25s; }
+.footer-contact a:hover { color: var(--spark-bright); }
+
+.footer-bottom {
+  padding-top: 26px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  justify-content: space-between;
+  color: var(--text-dim);
+  font-size: 0.92rem;
+}
+
+.footer-links { display: flex; flex-wrap: wrap; gap: 12px 24px; }
+
+.footer-bottom a { color: var(--text-dim); text-decoration: none; }
+.footer-bottom a:hover { color: var(--spark-bright); }
+
+/* ---------- Sticky call bar (mobile only) ---------- */
+
+.callbar { display: none; }
+
+@media (max-width: 860px) {
+  .callbar {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 140;
+    background: var(--line);
+    border-top: 1px solid var(--line-bright);
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  .callbar-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    min-height: 56px;
+    text-decoration: none;
+    font-family: "Barlow Condensed", sans-serif;
+    font-size: 1.12rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #fff;
+  }
+
+  .callbar-call { background: var(--spark); color: var(--on-spark); }
+  /* Abgedunkeltes WhatsApp-Grün (--wa: #0d7d3f statt Markengrün #128c4a):
+     weiße Schrift liegt damit bei ~5,2:1 — WCAG AA erfüllt. */
+  .callbar-whatsapp { background: var(--wa); }
+
+  .callbar-btn:active { filter: brightness(0.9); }
+
+  /* Keep the bar from covering the last line of the footer. */
+  body { padding-bottom: 58px; }
+}
+
+/* Karten-Tilt (Desktop-Maus): script.js neigt .service/.contact-card ein paar
+   Grad zum Cursor. Die CSS-Transition auf transform würde die GSAP-Werte
+   verschleppen, deshalb fällt sie mit .js-tilt weg — der Hover-Lift der
+   Kontaktkarte wird vom Tilt ersetzt. */
+.contact-card.js-tilt { transition: border-color 0.3s, background 0.3s; }
+
+/* Magnetic-Buttons (.btn-primary, .nav-phone): script.js schiebt sie pro
+   Frame ein paar Pixel Richtung Cursor. Dieselbe Entkopplung wie .js-tilt —
+   die transform-Transition wuerde die Inline-Werte verschleppen; der
+   Hover-Lift wird vom Magnetic-Lean ersetzt. */
+.btn-primary.js-magnetic { transition: box-shadow 0.3s, background 0.3s, border-color 0.3s, color 0.3s; }
+.nav-phone.js-magnetic { transition: background 0.25s, box-shadow 0.25s; }
+
+/* ---------- Scroll reveal ----------
+   Initial states are applied by GSAP from-tweens (script.js); the CSS default
+   is fully visible, so no-JS and prefers-reduced-motion users always get the
+   complete page. ScrollTrigger is position-based — an anchor jump cannot
+   strand elements invisible (the flaw the old IntersectionObserver avoided
+   and the position sweep worked around). */
+
+/* ---------- Responsive ---------- */
+
+@media (max-width: 1000px) {
+  .about { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 860px) {
+  :root { --pitch: 3.4vw; }
+
+  .nav-links,
+  .nav-phone { display: none; }
+
+  .nav-toggle { display: block; }
+
+  .site-header.open {
+    background: var(--panel);
+    border-bottom-color: var(--line);
+  }
+
+  .site-header.open .nav-links {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: var(--panel);
+    border-bottom: 1px solid var(--line);
+    padding: 8px clamp(20px, 5vw, 44px) 24px;
+  }
+
+  .site-header.open .nav-links li { border-bottom: 1px solid var(--line); }
+  .site-header.open .nav-links li:last-child { border-bottom: 0; }
+  .site-header.open .nav-links a { display: block; padding: 16px 0; font-size: 1.15rem; }
+  .site-header.open .nav-links a::after { display: none; }
+
+  .site-header.open .nav-call { display: block; margin-top: 14px; }
+
+  .site-header.open .nav-call a {
+    background: var(--spark);
+    color: var(--on-spark);
+    text-align: center;
+    border-radius: var(--radius);
+    padding: 15px 0;
+  }
+
+  .hero { min-height: 92svh; padding: 120px 0 100px; }
+  /* Mobil stehen die Aufnahmen untereinander, die Reihenfolge bleibt. */
+  .gallery-grid { grid-template-columns: 1fr; }
+  .shot,
+  .shot:nth-child(1),
+  .shot:nth-child(2),
+  .shot:nth-child(3),
+  .shot:nth-child(4),
+  .shot:nth-child(5),
+  .shot:nth-child(6),
+  .shot:nth-child(7) { grid-column: span 1; }
+  .cta-bar { flex-direction: column; align-items: flex-start; }
+}
+
+@media (max-width: 520px) {
+  body { font-size: 16px; }
+  .hero h1 { font-size: clamp(2.05rem, 9.6vw, 3.1rem); }
+  .btn { width: 100%; justify-content: center; }
+  .hero-actions { width: 100%; }
+}
+
+/* ---------- Reduced motion ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+
+  .hero-media { animation: none; }
+  .hero-glow, .hero-grain { animation: none; }
+  .marquee { animation: none; }
+  /* Galerie ohne Hover-Fahrt */
+  .shot:hover img { transform: none; }
+  /* Ablauf im fertigen Zustand: Naht liegt (CSS-Default), Nummern gefüllt */
+  .step-num { color: var(--spark); }
+}
