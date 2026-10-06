@@ -168,3 +168,25 @@ erreichbar gewesen). Alternativ: `artifact.html` als Single-File-Build publizier
   expliziten Wunsch. Datenschutzerklärung beschreibt WhatsApp als externen Dienst.
 - Impressum ist live-tauglich ohne Platzhalter; ein HTML-Kommentar dort erklärt, wann
   USt-IdNr./Handwerksrolle zu ergänzen sind (nur falls vorhanden).
+
+## Externe Einbettungen (Karte, Bewertungen, Videos)
+
+Die CSP in `site/vercel.json` erlaubt nur eigene Dateien. Ein Browser lässt blockierte
+Einbettungen **stumm leer** — deshalb bricht `build_artifact.py` ab, sobald eine Seite
+eine fremde Quelle lädt, die die CSP nicht freigibt (Build = Pflicht vor jedem Deploy).
+
+- **Standard (empfohlen): verlinken statt einbetten.** Google-Profil, Bewertungen und
+  Route als normaler Link/Button (`<a href="https://…" target="_blank" rel="noopener">`).
+  Links unterliegen der CSP nicht, kein Datenfluss an Google beim Seitenaufruf, keine
+  Änderung an Datenschutz oder CSP nötig.
+- **Bewertungen zeigen:** echte Zitate von Google per Hand als Text übernehmen (Vorname
+  + Ort, Sternzahl, Datum, mit Link „alle Bewertungen auf Google") — nur wörtlich und
+  nur echte (§ 5 UWG), bei neuen Bewertungen nachpflegen. Keine Widget-Skripte.
+- **Karte:** keine Karte der Feuerbachstraße (Wohnadresse; im Google-Profil ist sie
+  ausgeblendet). Stattdessen Einzugsgebiet als Text/Ortsliste.
+- **Falls doch eingebettet werden soll (nur auf ausdrücklichen Wunsch):** Zwei-Klick-
+  Lösung — Platzhalter mit Hinweis „Beim Laden werden Daten an Google übertragen",
+  Iframe erst nach Klick per script.js einsetzen (kein Inline-Skript!). Dann in
+  `vercel.json` gezielt ergänzen, z. B. Google Maps: `frame-src https://www.google.com`
+  (YouTube: `frame-src https://www.youtube-nocookie.com`), Datenschutzerklärung um den
+  Dienst erweitern, Build + Browser-Check ohne CSP-Konsolenfehler.
