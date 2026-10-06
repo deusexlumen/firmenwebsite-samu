@@ -23,3 +23,7 @@ verifizieren, auf Branch `worktree-domain-sa-mu` committen + pushen. Kein Merge,
 - 💾 Lokaler Vercel-Ersatz-Server: Header aus vercel.json + 404-Fallback; Playwright 390/1440 px × DPR 1–3: 0 CSP-Verstöße.
 - ⚠️ Offen: Impressum „§ 5 TMG" → „§ 5 DDG" (TMG seit 14.05.2024 außer Kraft) — braucht Auftrag.
 - Offen: Merge + Deploy, Google-Profil, Search Console, Festpreis/Rückruf/Ehrlichkeits-Block (Sascha), info@sa-mu.de.
+
+**Entscheidung (2026-10-06):** Google nur verlinken, nichts einbetten (Datenschutz, kein Pflegeaufwand). Bewertungs-Button kommt, sobald Sascha den Profil-Link schickt (dann auch `sameAs` im JSON-LD).
+- SEO umgesetzt (Subagent-Audit): HomeAndConstructionBusiness, Title/Description, H1 sr-only, H2 Ortsbezug, Sitemap ohne lastmod.
+- Offen mit Saschas Angabe: weitere Orte für areaServed + FAQ Region; Impressum § 5 DDG (Auftrag fehlt).
