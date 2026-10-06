@@ -15,3 +15,11 @@ verifizieren, auf Branch `worktree-domain-sa-mu` committen + pushen. Kein Merge,
 7. Verifikation: Build grün; lokaler Server mit vercel.json-Headern; Playwright ohne Konsolen-/CSP-Fehler (375 px + Desktop).
 
 **Bewusst NICHT autonom:** Festpreis-Zusage, Rückruf-Zeitversprechen (§ 5 UWG → Sascha), E-Mail-Umzug, Deploy, Merge.
+
+**Ergebnis (2026-10-06)** — alle Kriterien lokal erfüllt; Redirect vercel.app erst nach Deploy prüfbar.
+- 💾 Galerie-srcset: w-Angaben = echte Breite (Hochformat ~1200 w, nur Querformat g7 hat -1200).
+  DPR-3-Handys laden bewusst das volle Bild. `responsive()` in rebuild_gallery.py hält Varianten synchron.
+- 💾 CSP: `style-src 'self' 'unsafe-inline'` (style-src-attr kennt älteres Safari/Firefox nicht).
+- 💾 Lokaler Vercel-Ersatz-Server: Header aus vercel.json + 404-Fallback; Playwright 390/1440 px × DPR 1–3: 0 CSP-Verstöße.
+- ⚠️ Offen: Impressum „§ 5 TMG" → „§ 5 DDG" (TMG seit 14.05.2024 außer Kraft) — braucht Auftrag.
+- Offen: Merge + Deploy, Google-Profil, Search Console, Festpreis/Rückruf/Ehrlichkeits-Block (Sascha), info@sa-mu.de.

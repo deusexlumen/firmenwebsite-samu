@@ -41,7 +41,7 @@ site/                    → die Website (Webroot, Deploy-Quelle)
   vercel.json            → 301 firmenwebsite-samu.vercel.app → www.sa-mu.de, Cache-Header
                            (Fonts/JS 1 Jahr immutable, Bilder 1 Tag + SWR, CSS/JS 1 h),
                            Security-Header inkl. CSP (script-src 'self' — keine Inline-
-                           Skripte/Handler einbauen; style-src-attr erlaubt style="")
+                           Skripte/Handler einbauen; style-src erlaubt Inline-Styles)
   404.html               → Fehlerseite, root-absolute Pfade (wird für beliebig tiefe Pfade
                            ausgeliefert), noindex
   assets/img/            → hero-bg, gallery-1..7, about, sascha, logo-header (alles .webp),
@@ -136,9 +136,9 @@ Kein Dev-Server, keine Testsuite. „Test" = Build (validiert sich selbst) + Bro
   Feuerbachstraße 2a, 59174 Kamen.
 - **Bilder**: als `assets/img/*.webp` (max. 1600 px, Pillow `quality=80, method=6`), mit
   `width`/`height` im HTML **und** in `ASSETS` (bzw. `FONTS`) von `build_artifact.py`
-  eintragen, sonst fehlen sie im Artifact. Galerie: zusätzlich `gallery-N-800.webp`
-  (aus der 1600er abgeleitet) per `srcset`/`sizes` — bei neuem Galeriebild beide Größen
-  erzeugen; die Lightbox lädt über `data-full` immer 1600 px; der Build streicht
+  eintragen, sonst fehlen sie im Artifact. Galerie: zusätzlich `gallery-N-800.webp` (Querformat auch `-1200`)
+  per `srcset`/`sizes` (w-Angaben = echte Bildbreite!) — erzeugt `responsive()` in
+  rebuild_gallery.py; die Lightbox lädt über `data-full` immer 1600 px; der Build streicht
   `srcset`/`sizes` im Artifact.
 
 ## Deployment
