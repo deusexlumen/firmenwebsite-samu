@@ -101,6 +101,11 @@ if tags not in html:
 
 html = html.replace(tags, inlined)
 
+# The 800w gallery variants only save bandwidth on the live site; a single-file
+# build already carries the full 1600 px images, so drop the responsive hints
+# (srcset would otherwise point at files the artifact does not contain).
+html = re.sub(r' (?:srcset|sizes)="[^"]*"', '', html)
+
 # Inline every image and font reference, in both the markup and the stylesheet.
 for path, uri in IMAGES.items():
     html = html.replace(path, uri)
@@ -151,6 +156,6 @@ if re.search(r'https://fonts\.(googleapis|gstatic)\.com', out):
 with open('artifact.html', 'w', encoding='utf-8') as f:
     f.write(out)
 
-remaining = re.findall(r'(?:href|src)="(?!data:|#|tel:|mailto:|https:)[^"]+"', out)
+remaining = re.findall(r'(?:href|src|srcset)="(?!data:|#|tel:|mailto:|https:)[^"]+"', out)
 print('bytes:', len(out.encode('utf-8')))
 print('unresolved local references:', remaining or 'none')
