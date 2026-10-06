@@ -18,7 +18,7 @@ ist Anruf oder WhatsApp.
 > GDPR compliance (no external requests, no tracking), WCAG AA contrast and a
 > self-validating single-file build (~6.6 MB, everything inlined).
 
-**Live:** https://firmenwebsite-samu.vercel.app
+**Live:** https://www.sa-mu.de
 
 | Desktop Hero | Referenzen (Editorial-Grid) | Mobil mit Callbar |
 |---|---|---|

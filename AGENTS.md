@@ -5,8 +5,8 @@
 Statische Firmenwebsite für **Firma SaMu — Sascha Mundt** (Dachbeschichtung, Reparatur- und
 Schweißarbeiten, Hausmeisterservice, Malerarbeiten, Dachrinnenreinigung, Gartenpflege) aus
 Kamen. Reines HTML/CSS/JS, **kein Framework, kein Bundler, kein Backend, kein Formular** —
-die Kernaktion des Besuchers ist Anruf oder WhatsApp. Ziel-Domain: `mundt-dienstleistungen.de`
-(noch nicht geschaltet). Git-Remote: `github.com/deusexlumen/firmenwebsite-samu` (Branch
+die Kernaktion des Besuchers ist Anruf oder WhatsApp. Domain: `www.sa-mu.de`
+(live, Apex `sa-mu.de` leitet auf www um; DNS bei netcup). Git-Remote: `github.com/deusexlumen/firmenwebsite-samu` (Branch
 `main`, Conventional Commits, kurze deutsche Messages). Es gibt bewusst keine
 Manifest-Dateien (`package.json` o. ä.).
 
@@ -35,7 +35,7 @@ site/                    → die Website (Webroot, Deploy-Quelle)
                            .sig-Blocks in index.html (zwischen SIG:START/SIG:END)
   signature-mask.svg     → GENERIERT (build_sig_mask.py): 24 Mittellinien-Striche,
                            inline als `<mask id="sigDraw">` im SIG-Block
-  robots.txt / sitemap.xml → Crawler-Basics für mundt-dienstleistungen.de
+  robots.txt / sitemap.xml → Crawler-Basics für www.sa-mu.de
   .vercelignore          → hält IMG-*.jpg, *.py, .env* und .vercel aus dem Deploy
   assets/img/            → hero-bg, gallery-1..7, about, sascha, logo-header (alles .webp),
                            favicon-32.png, apple-touch-icon.png, og-image.jpg
@@ -133,7 +133,7 @@ Kein Dev-Server, keine Testsuite. „Test" = Build (validiert sich selbst) + Bro
 
 ## Deployment
 
-Live auf **Vercel**: https://firmenwebsite-samu.vercel.app — CLI aus `site/`:
+Live auf **Vercel**: https://www.sa-mu.de (Fallback https://firmenwebsite-samu.vercel.app) — CLI aus `site/`:
 `vercel deploy --yes --prod`. Kein Git-Auto-Deploy (Projekt nicht verknüpft); nach
 Änderungen manuell deployen oder im Dashboard Git anbinden. `.vercelignore` hält
 Rohfotos (`IMG-*.jpg`) und Werkzeugskripte (`*.py`) aus dem Deploy — die lagen zeitweise
