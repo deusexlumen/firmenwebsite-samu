@@ -36,7 +36,14 @@ site/                    → die Website (Webroot, Deploy-Quelle)
   signature-mask.svg     → GENERIERT (build_sig_mask.py): 24 Mittellinien-Striche,
                            inline als `<mask id="sigDraw">` im SIG-Block
   robots.txt / sitemap.xml → Crawler-Basics für www.sa-mu.de
-  .vercelignore          → hält IMG-*.jpg, *.py, .env* und .vercel aus dem Deploy
+  .vercelignore          → hält IMG-*.jpg, *.py, .env*, .vercel, artifact.html,
+                           signature-*.svg und *.md aus dem Deploy
+  vercel.json            → 301 firmenwebsite-samu.vercel.app → www.sa-mu.de, Cache-Header
+                           (Fonts/JS 1 Jahr immutable, Bilder 1 Tag + SWR, CSS/JS 1 h),
+                           Security-Header inkl. CSP (script-src 'self' — keine Inline-
+                           Skripte/Handler einbauen; style-src-attr erlaubt style="")
+  404.html               → Fehlerseite, root-absolute Pfade (wird für beliebig tiefe Pfade
+                           ausgeliefert), noindex
   assets/img/            → hero-bg, gallery-1..7, about, sascha, logo-header (alles .webp),
                            favicon-32.png, apple-touch-icon.png, og-image.jpg
   assets/fonts/          → self-hosted woff2 (Archivo Black, Barlow, Barlow Condensed,
@@ -129,7 +136,10 @@ Kein Dev-Server, keine Testsuite. „Test" = Build (validiert sich selbst) + Bro
   Feuerbachstraße 2a, 59174 Kamen.
 - **Bilder**: als `assets/img/*.webp` (max. 1600 px, Pillow `quality=80, method=6`), mit
   `width`/`height` im HTML **und** in `ASSETS` (bzw. `FONTS`) von `build_artifact.py`
-  eintragen, sonst fehlen sie im Artifact.
+  eintragen, sonst fehlen sie im Artifact. Galerie: zusätzlich `gallery-N-800.webp`
+  (aus der 1600er abgeleitet) per `srcset`/`sizes` — bei neuem Galeriebild beide Größen
+  erzeugen; die Lightbox lädt über `data-full` immer 1600 px; der Build streicht
+  `srcset`/`sizes` im Artifact.
 
 ## Deployment
 
