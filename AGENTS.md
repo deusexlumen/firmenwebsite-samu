@@ -5,8 +5,8 @@
 Statische Firmenwebsite für **Firma SaMu — Sascha Mundt** (Dachbeschichtung, Reparatur- und
 Schweißarbeiten, Hausmeisterservice, Malerarbeiten, Dachrinnenreinigung, Gartenpflege) aus
 Kamen. Reines HTML/CSS/JS, **kein Framework, kein Bundler, kein Backend, kein Formular** —
-die Kernaktion des Besuchers ist Anruf oder WhatsApp. Ziel-Domain: `mundt-dienstleistungen.de`
-(noch nicht geschaltet). Git-Remote: `github.com/deusexlumen/firmenwebsite-samu` (Branch
+die Kernaktion des Besuchers ist Anruf oder WhatsApp. Domain: `www.sa-mu.de`
+(live, Apex `sa-mu.de` leitet auf www um; DNS bei netcup). Git-Remote: `github.com/deusexlumen/firmenwebsite-samu` (Branch
 `main`, Conventional Commits, kurze deutsche Messages). Es gibt bewusst keine
 Manifest-Dateien (`package.json` o. ä.).
 
@@ -35,8 +35,15 @@ site/                    → die Website (Webroot, Deploy-Quelle)
                            .sig-Blocks in index.html (zwischen SIG:START/SIG:END)
   signature-mask.svg     → GENERIERT (build_sig_mask.py): 24 Mittellinien-Striche,
                            inline als `<mask id="sigDraw">` im SIG-Block
-  robots.txt / sitemap.xml → Crawler-Basics für mundt-dienstleistungen.de
-  .vercelignore          → hält IMG-*.jpg, *.py, .env* und .vercel aus dem Deploy
+  robots.txt / sitemap.xml → Crawler-Basics für www.sa-mu.de
+  .vercelignore          → hält IMG-*.jpg, *.py, .env*, .vercel, artifact.html,
+                           signature-*.svg und *.md aus dem Deploy
+  vercel.json            → 301 firmenwebsite-samu.vercel.app → www.sa-mu.de, Cache-Header
+                           (Fonts/JS 1 Jahr immutable, Bilder 1 Tag + SWR, CSS/JS 1 h),
+                           Security-Header inkl. CSP (script-src 'self' — keine Inline-
+                           Skripte/Handler einbauen; style-src erlaubt Inline-Styles)
+  404.html               → Fehlerseite, root-absolute Pfade (wird für beliebig tiefe Pfade
+                           ausgeliefert), noindex
   assets/img/            → hero-bg, gallery-1..7, about, sascha, logo-header (alles .webp),
                            favicon-32.png, apple-touch-icon.png, og-image.jpg
   assets/fonts/          → self-hosted woff2 (Archivo Black, Barlow, Barlow Condensed,
@@ -123,17 +130,20 @@ Kein Dev-Server, keine Testsuite. „Test" = Build (validiert sich selbst) + Bro
   Neue GSAP-Skript-Tags müssen in `build_artifact.py` mit inlined werden.
 - **HTML**: FAQ = natives `<details>`/`<summary>` + `FAQPage`-JSON-LD — beide synchron
   halten. SEO: meta description, OG (`assets/img/og-image.jpg`, 1200×630), twitter:card,
-  JSON-LD `RoofingContractor` mit `areaServed` Kamen. **Kontaktdaten stehen an vielen
+  JSON-LD `HomeAndConstructionBusiness` (kein RoofingContractor — kein Dachdeckerbetrieb) mit `areaServed` Kamen; weitere Orte nur nach Saschas Angabe, dann auch FAQ „Region" synchron. **Kontaktdaten stehen an vielen
   Stellen** (Header, Hero, Kontakt, Footer, Callbar, JSON-LD) — bei Änderungen alle
   synchron halten: Tel `+4915151100567`, Mail `saschamundt83@freenet.de`,
   Feuerbachstraße 2a, 59174 Kamen.
 - **Bilder**: als `assets/img/*.webp` (max. 1600 px, Pillow `quality=80, method=6`), mit
   `width`/`height` im HTML **und** in `ASSETS` (bzw. `FONTS`) von `build_artifact.py`
-  eintragen, sonst fehlen sie im Artifact.
+  eintragen, sonst fehlen sie im Artifact. Galerie: zusätzlich `gallery-N-800.webp` (Querformat auch `-1200`)
+  per `srcset`/`sizes` (w-Angaben = echte Bildbreite!) — erzeugt `responsive()` in
+  rebuild_gallery.py; die Lightbox lädt über `data-full` immer 1600 px; der Build streicht
+  `srcset`/`sizes` im Artifact.
 
 ## Deployment
 
-Live auf **Vercel**: https://firmenwebsite-samu.vercel.app — CLI aus `site/`:
+Live auf **Vercel**: https://www.sa-mu.de (Fallback https://firmenwebsite-samu.vercel.app) — CLI aus `site/`:
 `vercel deploy --yes --prod`. Kein Git-Auto-Deploy (Projekt nicht verknüpft); nach
 Änderungen manuell deployen oder im Dashboard Git anbinden. `.vercelignore` hält
 Rohfotos (`IMG-*.jpg`) und Werkzeugskripte (`*.py`) aus dem Deploy — die lagen zeitweise
@@ -158,3 +168,25 @@ erreichbar gewesen). Alternativ: `artifact.html` als Single-File-Build publizier
   expliziten Wunsch. Datenschutzerklärung beschreibt WhatsApp als externen Dienst.
 - Impressum ist live-tauglich ohne Platzhalter; ein HTML-Kommentar dort erklärt, wann
   USt-IdNr./Handwerksrolle zu ergänzen sind (nur falls vorhanden).
+
+## Externe Einbettungen (Karte, Bewertungen, Videos)
+
+Die CSP in `site/vercel.json` erlaubt nur eigene Dateien. Ein Browser lässt blockierte
+Einbettungen **stumm leer** — deshalb bricht `build_artifact.py` ab, sobald eine Seite
+eine fremde Quelle lädt, die die CSP nicht freigibt (Build = Pflicht vor jedem Deploy).
+
+- **Standard (empfohlen): verlinken statt einbetten.** Google-Profil, Bewertungen und
+  Route als normaler Link/Button (`<a href="https://…" target="_blank" rel="noopener">`).
+  Links unterliegen der CSP nicht, kein Datenfluss an Google beim Seitenaufruf, keine
+  Änderung an Datenschutz oder CSP nötig.
+- **Bewertungen zeigen:** echte Zitate von Google per Hand als Text übernehmen (Vorname
+  + Ort, Sternzahl, Datum, mit Link „alle Bewertungen auf Google") — nur wörtlich und
+  nur echte (§ 5 UWG), bei neuen Bewertungen nachpflegen. Keine Widget-Skripte.
+- **Karte:** keine Karte der Feuerbachstraße (Wohnadresse; im Google-Profil ist sie
+  ausgeblendet). Stattdessen Einzugsgebiet als Text/Ortsliste.
+- **Falls doch eingebettet werden soll (nur auf ausdrücklichen Wunsch):** Zwei-Klick-
+  Lösung — Platzhalter mit Hinweis „Beim Laden werden Daten an Google übertragen",
+  Iframe erst nach Klick per script.js einsetzen (kein Inline-Skript!). Dann in
+  `vercel.json` gezielt ergänzen, z. B. Google Maps: `frame-src https://www.google.com`
+  (YouTube: `frame-src https://www.youtube-nocookie.com`), Datenschutzerklärung um den
+  Dienst erweitern, Build + Browser-Check ohne CSP-Konsolenfehler.

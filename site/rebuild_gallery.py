@@ -44,6 +44,23 @@ def write(img, dest, max_dim, crop=None, quality=80):
     print(f'{dest:22} {img.size[0]:>5}x{img.size[1]:<5} {os.path.getsize(IMG + "/" + dest) // 1024:>4} KB')
 
 
+def responsive(dest, widths=(800, 1200)):
+    """Derive the smaller srcset variants (gallery-N-800.webp, …) from the full file.
+
+    Widths are pixel widths to match the `800w`/`1200w` descriptors in index.html.
+    Always rerun after the full file changes, or phones show a stale photo.
+    """
+    full = Image.open(f'{IMG}/{dest}')
+    w, h = full.size
+    for target in widths:
+        if target >= w * 0.9:   # portrait frames are only ~1200 wide; no point re-encoding
+            continue
+        name = dest.replace('.webp', f'-{target}.webp')
+        small = full.resize((target, round(h * target / w)), Image.LANCZOS)
+        small.save(f'{IMG}/{name}', 'WEBP', quality=80, method=6)
+        print(f'{name:22} {small.size[0]:>5}x{small.size[1]:<5} {os.path.getsize(IMG + "/" + name) // 1024:>4} KB')
+
+
 # --- Gallery: proof first, then finished work -------------------------------
 
 # 1+2: before and after inside one frame — the strongest evidence in the set
@@ -58,6 +75,10 @@ build('0139', 'gallery-5.webp', 1600)   # dormer and verge after coating and pai
 # 6+7: fresh coat with the scaffold still up, then painting work off the roof
 build('0151', 'gallery-6.webp', 1600)   # freshly coated roof, scaffold still standing
 build('0134', 'gallery-7.webp', 1600)   # painting work on garage and facade
+
+# Smaller srcset variants for phones and small tiles (lightbox keeps the 1600 px file)
+for n in range(1, 8):
+    responsive(f'gallery-{n}.webp')
 
 # --- Hero: finished roof against blue sky, nothing identifying in frame -----
 build('0145', 'hero-bg.webp', 1920, quality=78)

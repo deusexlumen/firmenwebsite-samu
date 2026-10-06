@@ -5,6 +5,7 @@ separate Impressum page into an anchor section (artifacts are one page).
 """
 
 import base64
+import json
 import re
 
 
@@ -101,6 +102,11 @@ if tags not in html:
 
 html = html.replace(tags, inlined)
 
+# The 800w gallery variants only save bandwidth on the live site; a single-file
+# build already carries the full 1600 px images, so drop the responsive hints
+# (srcset would otherwise point at files the artifact does not contain).
+html = re.sub(r' (?:srcset|sizes)="[^"]*"', '', html)
+
 # Inline every image and font reference, in both the markup and the stylesheet.
 for path, uri in IMAGES.items():
     html = html.replace(path, uri)
@@ -148,9 +154,32 @@ if 'name="viewport"' not in out:
 if re.search(r'https://fonts\.(googleapis|gstatic)\.com', out):
     raise SystemExit('build failed: page still requests fonts from Google servers')
 
+# The live site sends a strict Content-Security-Policy (vercel.json). A browser
+# silently blanks anything it blocks — an embedded map or review widget would
+# just stay empty. So every external source the pages load must be allowed
+# there explicitly, and adding one is a deliberate (and DSGVO-relevant) step.
+DIRECTIVE = {'iframe': 'frame-src', 'script': 'script-src', 'img': 'img-src',
+             'source': 'img-src', 'video': 'media-src', 'audio': 'media-src'}
+csp = next(h['value'] for rule in json.load(open('vercel.json', encoding='utf-8'))['headers']
+           for h in rule['headers'] if h['key'] == 'Content-Security-Policy')
+csp_dirs = {d.split()[0]: d.split()[1:] for d in csp.split(';') if d.strip()}
+blocked = []
+for page in ('index.html', 'impressum.html', 'datenschutz.html', '404.html'):
+    for tag, url in re.findall(r'<(\w+)\b[^>]*?\b(?:src|data-src)="(https?://[^"/]+)', open(page, encoding='utf-8').read()):
+        directive = DIRECTIVE.get(tag.lower(), 'default-src')
+        allowed = csp_dirs.get(directive, csp_dirs.get('default-src', []))
+        if url not in allowed:
+            blocked.append(f'{page}: <{tag}> {url} -> in vercel.json zu {directive} hinzufuegen')
+for url in re.findall(r'url\(["\']?(https?://[^"\')/]+)', css):
+    blocked.append(f'styles.css: {url} -> CSP erlaubt nur eigene Dateien')
+if blocked:
+    raise SystemExit('build failed: CSP in vercel.json wuerde blockieren (Seite bliebe leer):\n  '
+                     + '\n  '.join(blocked)
+                     + '\nErst klaeren: Datenschutzerklaerung + Zwei-Klick-Loesung (AGENTS.md, "Externe Einbettungen").')
+
 with open('artifact.html', 'w', encoding='utf-8') as f:
     f.write(out)
 
-remaining = re.findall(r'(?:href|src)="(?!data:|#|tel:|mailto:|https:)[^"]+"', out)
+remaining = re.findall(r'(?:href|src|srcset)="(?!data:|#|tel:|mailto:|https:)[^"]+"', out)
 print('bytes:', len(out.encode('utf-8')))
 print('unresolved local references:', remaining or 'none')

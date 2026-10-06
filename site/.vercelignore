@@ -4,3 +4,7 @@ IMG-*.jpg
 # Secrets und Plattform-Metadaten nie deployen (.gitignore greift hier nicht!)
 .env*
 .vercel
+# Generierter Single-File-Build (6,6 MB Duplikat) und Signatur-Quellen — nur lokal
+artifact.html
+signature-*.svg
+*.md
