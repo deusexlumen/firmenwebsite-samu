@@ -130,7 +130,7 @@ Kein Dev-Server, keine Testsuite. „Test" = Build (validiert sich selbst) + Bro
   Neue GSAP-Skript-Tags müssen in `build_artifact.py` mit inlined werden.
 - **HTML**: FAQ = natives `<details>`/`<summary>` + `FAQPage`-JSON-LD — beide synchron
   halten. SEO: meta description, OG (`assets/img/og-image.jpg`, 1200×630), twitter:card,
-  JSON-LD `RoofingContractor` mit `areaServed` Kamen. **Kontaktdaten stehen an vielen
+  JSON-LD `HomeAndConstructionBusiness` (kein RoofingContractor — kein Dachdeckerbetrieb) mit `areaServed` Kamen; weitere Orte nur nach Saschas Angabe, dann auch FAQ „Region" synchron. **Kontaktdaten stehen an vielen
   Stellen** (Header, Hero, Kontakt, Footer, Callbar, JSON-LD) — bei Änderungen alle
   synchron halten: Tel `+4915151100567`, Mail `saschamundt83@freenet.de`,
   Feuerbachstraße 2a, 59174 Kamen.

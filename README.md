@@ -44,7 +44,7 @@ ist Anruf oder WhatsApp.
 - **Zugänglich**: Skip-Links, Fokus-Trap-Lightbox mit Fokus-Rückgabe, ESC-Handling,
   `aria-current`, WCAG-AA-Kontraste, semantische Heading-Struktur, FAQ als natives
   `<details>` — synchron mit dem `FAQPage`-JSON-LD.
-- **SEO**: `RoofingContractor`-JSON-LD mit `areaServed`, Open Graph (1200×630),
+- **SEO**: `HomeAndConstructionBusiness`-JSON-LD mit `areaServed`, Open Graph (1200×630),
   Sitemap/Robots, sprechende Alt-Texte (UWG-konform: Captions = tatsächlicher
   Zustand).
 
